@@ -3,7 +3,7 @@ name: quality_ci
 on:
   push:
     branches:
-      - master
+      - main
 jobs:
   check_code_quality:
     runs-on: ubuntu-latest
@@ -21,7 +21,7 @@ jobs:
         run: |
           black --check --line-length 120 --target-version py37 crnn_pom/* tests
           isort --check-only crnn_pom/* tests
-          flake8 crnn_pom/* tests --max-line-length 120
+          flake8 crnn_pom/* tests --max-line-length 120 
   test:
     needs: check_code_quality
     runs-on: ubuntu-latest
