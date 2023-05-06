@@ -1,6 +1,5 @@
 import pytest
 import torch
-
 from src.model import BidirectionalLSTM, ConvBNReluBlock, ConvReluBlock
 
 
@@ -17,18 +16,12 @@ def lstm_model():
     input_size = 256
     hidden_size = 128
     out_features = 64
-    return BidirectionalLSTM(
-        input_size=input_size, hidden_size=hidden_size, out_features=out_features
-    )
+    return BidirectionalLSTM(input_size=input_size, hidden_size=hidden_size, out_features=out_features)
 
 
 def test_BidirectionalLSTM(lstm_input, lstm_model):
     output_tensor = lstm_model(lstm_input)
-    assert output_tensor.shape == (
-        lstm_input.shape[0],
-        lstm_input.shape[1],
-        lstm_model.out_features,
-    )
+    assert output_tensor.shape == (lstm_input.shape[0], lstm_input.shape[1], lstm_model.out_features)
 
 
 @pytest.fixture()
@@ -45,13 +38,7 @@ def test_forward(conv_relu_block):
 
 @pytest.fixture
 def conv_bn_relu_block():
-    return ConvBNReluBlock(
-        in_channels=3,
-        out_channels=64,
-        kernel=(3, 3),
-        stride=(1, 1),
-        padding=(1, 1),
-    )
+    return ConvBNReluBlock(in_channels=3, out_channels=64, kernel=(3, 3), stride=(1, 1), padding=(1, 1))
 
 
 def test_ConvBNReluBlock(conv_bn_relu_block):

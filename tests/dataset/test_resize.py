@@ -1,8 +1,8 @@
-import pytest
 import numpy as np
-from PIL import Image
+import pytest
 import torch
-from src.dataset.imgaug.resize import Resize, Normalize
+from PIL import Image
+from src.dataset.imgaug.resize import Normalize, Resize
 
 
 @pytest.fixture
