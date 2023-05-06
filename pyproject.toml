@@ -1,0 +1,61 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "crnn-pom"
+description = "crnn in pytorch"
+readme = "README.md"
+License = "MIT"
+requires-python = ">=3.7"
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    "accelerate",
+    "einops",
+    "lmdb",
+    "numpy",
+    "pillow",
+    "timm",
+    "torch",
+    "torchvision"
+]
+dynamic = ["version"]
+
+
+[project.optional-dependencies]
+dev = [
+    "build >=0.10.0",
+    "pytest >=7.3.1",
+    "black >=23.3.0",
+    "flake8 >=6.0.0",
+    "isort >=5.12.0",
+    "twine >=4.0.2"
+]
+
+
+[tool.hatch.build.targets.wheel]
+packages = ["crnn_pom/"]
+
+[tool.hatch.version]
+path = "crnn_pom/_version.py"
+
+[tool.black]
+line-length = 120
+skip-magic-trailing-comma = true
+skip-string-normalization = true
+
+
+[tool.flake8]
+max-line-length = 120
+extend-ignore = ["E203, E741"]
+
+[tool.isort]
+profile = "black"
