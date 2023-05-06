@@ -1,9 +1,11 @@
 import torch.nn as nn
 from einops import rearrange
-from torch import Tensor
 
-from .recipe import (cnn_component_list_factory, factory_block,
-                          lstm_component_list_factory)
+from .recipe import (
+    cnn_component_list_factory,
+    factory_block,
+    lstm_component_list_factory,
+)
 
 flavour = "pytorch"
 
@@ -44,24 +46,18 @@ class CRNN(nn.Module):
         crnn = CRNN(cnn_recipe=cnn_recipe, rnn_recipe=rnn_recipe)
     """
 
-    def __init__(
-        self, cnn_recipe: dict, rnn_recipe: dict, input_channels, out_features
-    ):
+    def __init__(self, cnn_recipe: dict, rnn_recipe: dict, input_channels, out_features):
         super(CRNN, self).__init__()
         layers = []
         rnn = []
         # Generate CNN layers
-        cnn_recipe, out_channel = cnn_component_list_factory(
-            cnn_recipe, input_channels=input_channels
-        )
+        cnn_recipe, out_channel = cnn_component_list_factory(cnn_recipe, input_channels=input_channels)
         for key, _ in cnn_recipe.items():
             for operator in cnn_recipe[key]:
                 layers += [factory_block(**operator)]
 
         # Generate RNN layers
-        rnn_recipe = lstm_component_list_factory(
-            rnn_recipe, input_size=out_channel, out_features=out_features
-        )
+        rnn_recipe = lstm_component_list_factory(rnn_recipe, input_size=out_channel, out_features=out_features)
         for key, _ in rnn_recipe.items():
             for operator in rnn_recipe[key]:
                 rnn += [factory_block(**operator)]

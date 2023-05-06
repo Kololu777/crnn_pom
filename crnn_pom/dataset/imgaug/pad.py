@@ -3,10 +3,9 @@ from typing import Tuple, Union
 
 import numpy as np
 import torch
+from dataset.imgaug import ImageConverter
 from PIL import Image
 from torch import Tensor
-
-from dataset.imgaug import ImageConverter
 
 
 class PadDirection(Enum):
@@ -15,11 +14,7 @@ class PadDirection(Enum):
 
 
 class PAD(object):
-    def __init__(
-        self,
-        max_size: Tuple[int, int, int],
-        pad_direction: PadDirection = PadDirection.RIGHT,
-    ):
+    def __init__(self, max_size: Tuple[int, int, int], pad_direction: PadDirection = PadDirection.RIGHT):
         self.max_size = max_size
         self.pad_direction = pad_direction
         self._converter = ImageConverter()
@@ -30,12 +25,8 @@ class PAD(object):
         pad_img[:, :, w] = img
 
         if self.max_size[2] != w and self.pad_direction == PadDirection.RIGHT:
-            pad_img[:, :, w:] = (
-                img[:, :, w - 1].unsqueeze(2).expand(c, h, self.max_size[2] - w)
-            )
+            pad_img[:, :, w:] = img[:, :, w - 1].unsqueeze(2).expand(c, h, self.max_size[2] - w)
         elif self.max_size[2] != w and self.pad_direction == PadDirection.LEFT:
-            pad_img[:, :, self.max_size[2] - w :] = pad_img[:, :, w]
-            pad_img[:, :, : self.max_size[2] - w] = (
-                img[:, :, w - 1].unsqueeze(2).expand(c, h, self.max_size[2] - w)
-            )
+            pad_img[:, :, self.max_size[2] - w] = pad_img[:, :, w]
+            pad_img[:, :, : self.max_size[2] - w] = img[:, :, w - 1].unsqueeze(2).expand(c, h, self.max_size[2] - w)
         return pad_img

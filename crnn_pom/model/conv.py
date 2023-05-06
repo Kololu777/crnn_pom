@@ -1,8 +1,6 @@
-from typing import Optional, Union
+from typing import Union
 
-import torch
 import torch.nn as nn
-import torch.nn.functional as F
 from torch import Tensor
 from torch.nn.common_types import _size_2_t
 
@@ -28,20 +26,11 @@ class ConvReluBlock(nn.Module):
     """
 
     def __init__(
-        self,
-        in_channels: int,
-        out_channels: int,
-        kernel: _size_2_t,
-        stride: _size_2_t,
-        padding: Union[_size_2_t, str],
+        self, in_channels: int, out_channels: int, kernel: _size_2_t, stride: _size_2_t, padding: Union[_size_2_t, str]
     ):
         super(ConvReluBlock, self).__init__()
         self.conv = nn.Conv2d(
-            in_channels=in_channels,
-            out_channels=out_channels,
-            kernel_size=kernel,
-            stride=stride,
-            padding=padding,
+            in_channels=in_channels, out_channels=out_channels, kernel_size=kernel, stride=stride, padding=padding
         )
         self.relu = nn.ReLU(inplace=True)
 
@@ -76,20 +65,11 @@ class ConvBNReluBlock(nn.Module):
     """
 
     def __init__(
-        self,
-        in_channels: int,
-        out_channels: int,
-        kernel: _size_2_t,
-        stride: _size_2_t,
-        padding: Union[_size_2_t, str],
+        self, in_channels: int, out_channels: int, kernel: _size_2_t, stride: _size_2_t, padding: Union[_size_2_t, str]
     ):
         super(ConvBNReluBlock, self).__init__()
         self.conv = nn.Conv2d(
-            in_channels=in_channels,
-            out_channels=out_channels,
-            kernel_size=kernel,
-            stride=stride,
-            padding=padding,
+            in_channels=in_channels, out_channels=out_channels, kernel_size=kernel, stride=stride, padding=padding
         )
         self.bn = nn.BatchNorm2d(out_channels)
         self.relu = nn.ReLU(inplace=True)
@@ -123,15 +103,9 @@ class BidirectionalLSTM(nn.Module):
     def __init__(self, input_size: int, hidden_size: int, out_features: int):
         super(BidirectionalLSTM, self).__init__()
         self.rnn = nn.LSTM(
-            input_size=input_size,
-            hidden_size=hidden_size,
-            num_layers=1,
-            bidirectional=True,
-            batch_first=True,
+            input_size=input_size, hidden_size=hidden_size, num_layers=1, bidirectional=True, batch_first=True
         )
-        self.embedding = nn.Linear(
-            in_features=hidden_size * 2, out_features=out_features
-        )
+        self.embedding = nn.Linear(in_features=hidden_size * 2, out_features=out_features)
 
     def forward(self, input: Tensor) -> Tensor:
         self.rnn.flatten_parameters()

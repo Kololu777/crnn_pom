@@ -1,10 +1,9 @@
 from typing import Union
 
 import numpy as np
+from dataset.imgaug import ImageConverter
 from PIL import Image
 from torch import Tensor
-
-from dataset.imgaug import ImageConverter
 
 
 class Normalize(object):

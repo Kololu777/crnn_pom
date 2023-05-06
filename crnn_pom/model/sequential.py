@@ -25,15 +25,9 @@ class BidirectionalLSTM(nn.Module):
         super(BidirectionalLSTM, self).__init__()
         self.out_features = out_features
         self.rnn = nn.LSTM(
-            input_size=input_size,
-            hidden_size=hidden_size,
-            num_layers=1,
-            bidirectional=True,
-            batch_first=True,
+            input_size=input_size, hidden_size=hidden_size, num_layers=1, bidirectional=True, batch_first=True
         )
-        self.embedding = nn.Linear(
-            in_features=hidden_size * 2, out_features=self.out_features
-        )
+        self.embedding = nn.Linear(in_features=hidden_size * 2, out_features=self.out_features)
 
     def forward(self, input: Tensor) -> Tensor:
         self.rnn.flatten_parameters()

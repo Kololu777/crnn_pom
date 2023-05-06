@@ -19,13 +19,7 @@ crnn_cnn = dict(
     covn4_x=[
         dict(type="ConvBNReLU", out_channels=512, kernel=3, padding=1, stride=1),
         dict(type="ConvBNReLU", out_channels=512, kernel=3, padding=1, stride=1),
-        dict(
-            type="MaxPooling",
-            out_channels=512,
-            kernel=(2, 1),
-            stride=(2, 1),
-            padding=(0, 0),
-        ),
+        dict(type="MaxPooling", out_channels=512, kernel=(2, 1), stride=(2, 1), padding=(0, 0)),
     ],
     conv5_x=[dict(type="ConvBNReLU", out_channels=512, kernel=2, padding=0, stride=1)],
 )
@@ -63,9 +57,7 @@ def cnn_component_list_factory(component_list: dict, input_channels: int) -> dic
     return component_list, last_out_channel
 
 
-def lstm_component_list_factory(
-    component_list: dict, input_size: int, out_features: int
-) -> dict:
+def lstm_component_list_factory(component_list: dict, input_size: int, out_features: int) -> dict:
     """
     Constructs a list of LSTM components with input size, hidden size, and
     output feature size based on a recipe dictionary and input and output

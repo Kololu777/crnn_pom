@@ -1,21 +1,15 @@
-import math
-import random
-from enum import Enum
-from typing import Callable, Optional, Tuple, Union
+from typing import Optional, Tuple, Union
 
 import numpy as np
-import torch
-import torchvision.transforms as transforms
 import torchvision.transforms.functional as F
+from dataset.imgaug import ImageConverter
 from PIL import Image
 from torch import Tensor
 from torchvision.transforms import InterpolationMode
 
-from dataset.imgaug import ImageConverter
-
 pair = (
     lambda x: x if isinstance(x, tuple) else (x, x)
-)  # type: Callable[[Union[int, Tuple[int, int]]], Tuple[int, int]]
+)  # type: Callable[[Union[int, Tuple[int, int]]], Tuple[int, int]] #noqa
 
 
 class PILResize:
@@ -42,9 +36,7 @@ class PILResize:
         >>> resized_img = resize(sample_img)
     """
 
-    def __init__(
-        self, size: Union[int, Tuple[int, int]], interpolation: int = Image.BILINEAR
-    ) -> None:
+    def __init__(self, size: Union[int, Tuple[int, int]], interpolation: int = Image.BILINEAR) -> None:
         self._interpolation = interpolation
         self._size = pair(size)
 
@@ -77,11 +69,11 @@ class Resize:
 
     Args:
         size (Tuple[int, int]): The target size (width, height) for the resized image.
-        interpolation (InterpolationMode, optional): The interpolation mode used for resizing. 
+        interpolation (InterpolationMode, optional): The interpolation mode used for resizing.
                                                      Default is InterpolationMode.BILINEAR.
-        max_size (Optional[Tuple[int, int]], optional): If not None, limit the image size to be no larger 
+        max_size (Optional[Tuple[int, int]], optional): If not None, limit the image size to be no larger
                                                         than this size (width, height). Default is None.
-        antialias (Optional[bool], optional): Whether to use an anti-aliasing filter when downsampling an image. 
+        antialias (Optional[bool], optional): Whether to use an anti-aliasing filter when downsampling an image.
                                               Default is None, and the backend decides the best approach.
 
     Examples:
@@ -116,6 +108,4 @@ class Resize:
             A torch.Tensor with the resized image data.
         """
         img = self._converter.to_torch_tensor(img)
-        return F.resize(
-            img, self.size, self.interpolation, self.max_size, self.antialias
-        )
+        return F.resize(img, self.size, self.interpolation, self.max_size, self.antialias)

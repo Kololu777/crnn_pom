@@ -1,6 +1,6 @@
 import os
 import random
-from typing import List, Optional, Tuple, Union
+from typing import List, Optional, Union
 
 import numpy as np
 import torch
@@ -44,7 +44,7 @@ class STRLabelConverter:
             upper_length (int, optional): The maximum length for the encoded text. Defaults to 25.
 
         Returns:
-            Tuple[torch.LongTensor, torch.IntTensor]: A tuple containing the encoded text as 
+            Tuple[torch.LongTensor, torch.IntTensor]: A tuple containing the encoded text as
             a LongTensor and the lengths as an IntTensor.
         """
         if isinstance(text, str):
@@ -57,9 +57,7 @@ class STRLabelConverter:
             batch_text[idx][: len(text)] = torch.LongTensor(text)
         return batch_text.to(device), torch.IntTensor(length).to(device)
 
-    def decode(
-        self, text_index: torch.LongTensor, length: torch.IntTensor
-    ) -> List[str]:
+    def decode(self, text_index: torch.LongTensor, length: torch.IntTensor) -> List[str]:
         """
         Decode the LongTensor representation of text back into its original string form.
 
@@ -97,18 +95,11 @@ def seed_initializer(seed: int):
     torch.backends.cudnn.benchmark = True
 
 
-def model_save(
-    model: nn.Module,
-    save_dir: str,
-    save_file_name: Union[int, str],
-    epoch: Optional[int] = None,
-):
+def model_save(model: nn.Module, save_dir: str, save_file_name: Union[int, str], epoch: Optional[int] = None):
     os.makedirs(save_dir, exist_ok=True)
     save_file_name = os.path.splitext(str(save_file_name))[0]
     if isinstance(epoch, int):
-        save_path = os.path.join(
-            save_dir, f"epoch_{epoch}_step_{save_file_name}" + ".pth"
-        )
+        save_path = os.path.join(save_dir, f"epoch_{epoch}_step_{save_file_name}" + ".pth")
     else:
         save_path = os.path.join(save_dir, f"{save_file_name}" + ".pth")
     print(save_path)

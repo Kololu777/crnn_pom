@@ -2,36 +2,24 @@ from parser import opt
 
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 from accelerate import Accelerator
-from timm.optim.optim_factory import create_optimizer_v2
-from tqdm import tqdm
-
-from utils import (STRLabelConverter, model_save,
-                                        seed_initializer)
 from dataset.lmdb_dataset import LmdbDataset
 from model.crnn import CRNN
 from model.recipe import crnn_cnn, crnn_lstm
+from timm.optim.optim_factory import create_optimizer_v2
+from tqdm import tqdm
+from utils import STRLabelConverter, model_save, seed_initializer
+
 
 def train():
     accelerator = Accelerator()
     device = accelerator.device
     seed_initializer(opt.seed)
 
-    model = CRNN(
-        cnn_recipe=crnn_cnn,
-        rnn_recipe=crnn_lstm,
-        input_channels=3,
-        out_features=len(opt.character) + 1,
-    )
+    model = CRNN(cnn_recipe=crnn_cnn, rnn_recipe=crnn_lstm, input_channels=3, out_features=len(opt.character) + 1)
 
-    images_opt = {
-        "imgH": 32,
-        "imgW": 100,
-        "is_keep_ratio": False,
-        "is_lower_character": True,
-    }
-    dataset = train_dataset = LmdbDataset(root=opt.trainroot, opt=images_opt)
+    images_opt = {"imgH": 32, "imgW": 100, "is_keep_ratio": False, "is_lower_character": True}
+    dataset = LmdbDataset(root=opt.trainroot, opt=images_opt)
     data = torch.utils.data.DataLoader(dataset, batch_size=opt.batch_size, shuffle=True, num_workers=4, pin_memory=True)
 
     criterion = nn.CTCLoss()
@@ -42,7 +30,6 @@ def train():
     model.train()
 
     str_label_converter = STRLabelConverter(opt.character)
-
 
     for epoch in range(opt.epoch):
         for idx, data in enumerate(tqdm(data)):
@@ -67,6 +54,7 @@ def train():
                 print(str_label_converter.decode(output_pred_max, length_true))
                 model_save(model, save_dir=opt.save_dir, save_file_name=idx, epoch=epoch)
         model_save.save(model, save_dir=opt.save_dir, save_file_name="last")
-        
+
+
 if __name__ == "__main__":
     train()
