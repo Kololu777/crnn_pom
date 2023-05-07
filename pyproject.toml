@@ -49,9 +49,6 @@ path = "crnn_pom/_version.py"
 
 [tool.black]
 line-length = 120
-skip-magic-trailing-comma = true
-skip-string-normalization = true
-
 
 [tool.flake8]
 max-line-length = 120
