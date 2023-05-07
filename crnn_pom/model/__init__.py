@@ -1,8 +1,8 @@
-from .conv import ConvBNReluBlock, ConvReluBlock  # noqa
-from .crnn import CRNN  # noqa
-from .recipe import (  # noqa
+from .conv import ConvBNReluBlock, ConvReluBlock
+from .crnn import CRNN
+from .recipe import (
     cnn_component_list_factory,
     factory_block,
     lstm_component_list_factory,
 )
-from .sequential import BidirectionalLSTM  # noqa
+from .sequential import BidirectionalLSTM
